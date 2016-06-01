@@ -132,11 +132,12 @@
   <Model>
     <Tables>
       <Table name="TAREA">
-        <Columns />
+        <Columns>
+          <Column name="DESCRIPCION" key="false" dataType="VARCHAR(255)" notNull="false" autoIncrement="false" defaultValue="" />
+        </Columns>
         <ForeignKeys>
           <ForeignKey table="HISTORIA DE USUARIO" column="ID_HIUS" notNull="true" defaultValue="" index="0" name="HISTORIA DE USUARIO_ID_HIUS" />
           <ForeignKey table="HISTORIA DE USUARIO" column="PRODUCT OWNER_ID_PO" notNull="true" defaultValue="" index="1" name="HISTORIA DE USUARIO_PRODUCT OWNER_ID_PO" />
-          <ForeignKey table="ESTADO DE TAREA" column="IDESTADO" notNull="true" defaultValue="" index="2" name="ESTADO DE TAREA_IDESTADO" />
         </ForeignKeys>
         <Indexes />
       </Table>
@@ -148,6 +149,7 @@
         </Columns>
         <ForeignKeys>
           <ForeignKey table="MIEMBRO EQUIPO" column="ID_EQ" notNull="true" defaultValue="" index="1" name="MIEMBRO EQUIPO_ID_EQ" />
+          <ForeignKey table="TRABAJADOR" column="ID_TRAB" notNull="true" defaultValue="" index="2" name="TRABAJADOR_ID_TRAB" />
         </ForeignKeys>
         <Indexes />
       </Table>
@@ -155,18 +157,19 @@
         <Columns>
           <Column name="ID_PO" key="true" dataType="INTEGER" notNull="true" autoIncrement="false" defaultValue="" />
         </Columns>
-        <ForeignKeys />
+        <ForeignKeys>
+          <ForeignKey table="TRABAJADOR" column="ID_TRAB" notNull="true" defaultValue="" index="1" name="TRABAJADOR_ID_TRAB" />
+        </ForeignKeys>
         <Indexes />
       </Table>
       <Table name="HISTORIA DE USUARIO">
         <Columns>
           <Column name="ID_HIUS" key="true" dataType="INTEGER" notNull="true" autoIncrement="false" defaultValue="" />
+          <Column name="COMPLEJIDAD" key="false" dataType="INTEGER" notNull="false" autoIncrement="false" defaultValue="" />
+          <Column name="IMPORTANCIA" key="false" dataType="INTEGER" notNull="false" autoIncrement="false" defaultValue="" />
         </Columns>
         <ForeignKeys>
           <ForeignKey table="PRODUCT OWNER" column="ID_PO" notNull="true" defaultValue="" index="1" name="PRODUCT OWNER_ID_PO" />
-          <ForeignKey table="CONJUNTO DE HU" column="ID_CHU" notNull="true" defaultValue="" index="2" name="CONJUNTO DE HU_ID_CHU" />
-          <ForeignKey table="CONJUNTO DE HU" column="PLANNING_MIEMBRO EQUIPO_ID_EQ" notNull="true" defaultValue="" index="3" name="CONJUNTO DE HU_PLANNING_MIEMBRO EQUIPO_ID_EQ" />
-          <ForeignKey table="CONJUNTO DE HU" column="PLANNING_PRODUCT OWNER_ID_PO" notNull="true" defaultValue="" index="4" name="CONJUNTO DE HU_PLANNING_PRODUCT OWNER_ID_PO" />
         </ForeignKeys>
         <Indexes />
       </Table>
@@ -187,7 +190,10 @@
           <Column name="IDESTADO" key="true" dataType="INTEGER" notNull="true" autoIncrement="false" defaultValue="" />
           <Column name="DESCRIPCION" key="false" dataType="VARCHAR(255)" notNull="false" autoIncrement="false" defaultValue="" />
         </Columns>
-        <ForeignKeys />
+        <ForeignKeys>
+          <ForeignKey table="TAREA" column="HISTORIA DE USUARIO_ID_HIUS" notNull="true" defaultValue="" index="1" name="TAREA_HISTORIA DE USUARIO_ID_HIUS" />
+          <ForeignKey table="TAREA" column="HISTORIA DE USUARIO_PRODUCT OWNER_ID_PO" notNull="true" defaultValue="" index="2" name="TAREA_HISTORIA DE USUARIO_PRODUCT OWNER_ID_PO" />
+        </ForeignKeys>
         <Indexes />
       </Table>
       <Table name="PLANNING">
@@ -200,63 +206,136 @@
         </ForeignKeys>
         <Indexes />
       </Table>
-      <Table name="CONJUNTO DE HU">
+      <Table name="ASIGNACION SPRINT-HU">
+        <Columns />
+        <ForeignKeys>
+          <ForeignKey table="HISTORIA DE USUARIO" column="ID_HIUS" notNull="true" defaultValue="" index="0" name="HISTORIA DE USUARIO_ID_HIUS" />
+          <ForeignKey table="HISTORIA DE USUARIO" column="PRODUCT OWNER_ID_PO" notNull="true" defaultValue="" index="1" name="HISTORIA DE USUARIO_PRODUCT OWNER_ID_PO" />
+          <ForeignKey table="SPRINT" column="ID_SP" notNull="true" defaultValue="" index="2" name="SPRINT_ID_SP" />
+          <ForeignKey table="SPRINT" column="PLANNING_MIEMBRO EQUIPO_ID_EQ" notNull="true" defaultValue="" index="3" name="SPRINT_PLANNING_MIEMBRO EQUIPO_ID_EQ" />
+          <ForeignKey table="SPRINT" column="PLANNING_PRODUCT OWNER_ID_PO" notNull="true" defaultValue="" index="4" name="SPRINT_PLANNING_PRODUCT OWNER_ID_PO" />
+        </ForeignKeys>
+        <Indexes />
+      </Table>
+      <Table name="PROYECTO">
         <Columns>
-          <Column name="ID_CHU" key="true" dataType="INTEGER" notNull="true" autoIncrement="false" defaultValue="" />
+          <Column name="ID_PROY" key="true" dataType="INTEGER" notNull="true" autoIncrement="false" defaultValue="" />
+          <Column name="DESCRIPCION" key="false" dataType="VARCHAR(255)" notNull="false" autoIncrement="false" defaultValue="" />
+        </Columns>
+        <ForeignKeys />
+        <Indexes />
+      </Table>
+      <Table name="SCRUM TEAM">
+        <Columns />
+        <ForeignKeys>
+          <ForeignKey table="PRODUCT OWNER" column="ID_PO" notNull="true" defaultValue="" index="0" name="PRODUCT OWNER_ID_PO" />
+          <ForeignKey table="MIEMBRO EQUIPO" column="ID_EQ" notNull="true" defaultValue="" index="1" name="MIEMBRO EQUIPO_ID_EQ" />
+        </ForeignKeys>
+        <Indexes />
+      </Table>
+      <Table name="ASIGNACION PROY">
+        <Columns>
+          <Column name="FECHAINI" key="false" dataType="DATE" notNull="false" autoIncrement="false" defaultValue="" />
+          <Column name="FECHAFIN" key="false" dataType="DATE" notNull="false" autoIncrement="false" defaultValue="" />
         </Columns>
         <ForeignKeys>
-          <ForeignKey table="PLANNING" column="MIEMBRO EQUIPO_ID_EQ" notNull="true" defaultValue="" index="1" name="PLANNING_MIEMBRO EQUIPO_ID_EQ" />
-          <ForeignKey table="PLANNING" column="PRODUCT OWNER_ID_PO" notNull="true" defaultValue="" index="2" name="PLANNING_PRODUCT OWNER_ID_PO" />
-          <ForeignKey table="SPRINT" column="ID_SP" notNull="true" defaultValue="" index="3" name="SPRINT_ID_SP" />
-          <ForeignKey table="SPRINT" column="PLANNING_MIEMBRO EQUIPO_ID_EQ" notNull="true" defaultValue="" index="4" name="SPRINT_PLANNING_MIEMBRO EQUIPO_ID_EQ" />
-          <ForeignKey table="SPRINT" column="PLANNING_PRODUCT OWNER_ID_PO" notNull="true" defaultValue="" index="5" name="SPRINT_PLANNING_PRODUCT OWNER_ID_PO" />
+          <ForeignKey table="SCRUM TEAM" column="PRODUCT OWNER_ID_PO" notNull="true" defaultValue="" index="0" name="SCRUM TEAM_PRODUCT OWNER_ID_PO" />
+          <ForeignKey table="SCRUM TEAM" column="MIEMBRO EQUIPO_ID_EQ" notNull="true" defaultValue="" index="1" name="SCRUM TEAM_MIEMBRO EQUIPO_ID_EQ" />
+          <ForeignKey table="PROYECTO" column="ID_PROY" notNull="true" defaultValue="" index="2" name="PROYECTO_ID_PROY" />
         </ForeignKeys>
+        <Indexes />
+      </Table>
+      <Table name="IDENTIDAD LOG">
+        <Columns />
+        <ForeignKeys>
+          <ForeignKey table="CUENTAS" column="ID_CU" notNull="true" defaultValue="" index="0" name="CUENTAS_ID_CU" />
+          <ForeignKey table="TRABAJADOR" column="ID_TRAB" notNull="true" defaultValue="" index="1" name="TRABAJADOR_ID_TRAB" />
+        </ForeignKeys>
+        <Indexes />
+      </Table>
+      <Table name="CUENTAS">
+        <Columns>
+          <Column name="ID_CU" key="true" dataType="INTEGER" notNull="true" autoIncrement="false" defaultValue="" />
+          <Column name="USUARIO" key="false" dataType="VARCHAR(255)" notNull="false" autoIncrement="false" defaultValue="" />
+          <Column name="PASSWORD" key="false" dataType="VARCHAR(255)" notNull="false" autoIncrement="false" defaultValue="" />
+        </Columns>
+        <ForeignKeys />
+        <Indexes />
+      </Table>
+      <Table name="TRABAJADOR">
+        <Columns>
+          <Column name="ID_TRAB" key="true" dataType="INTEGER" notNull="true" autoIncrement="false" defaultValue="" />
+          <Column name="NOMBRE" key="false" dataType="VARCHAR(255)" notNull="false" autoIncrement="false" defaultValue="" />
+          <Column name="APELLIDO" key="false" dataType="VARCHAR(255)" notNull="false" autoIncrement="false" defaultValue="" />
+          <Column name="FECHA NAC" key="false" dataType="DATE" notNull="false" autoIncrement="false" defaultValue="" />
+        </Columns>
+        <ForeignKeys />
         <Indexes />
       </Table>
     </Tables>
     <Relations>
       <Relation name="DA VIDA" source="PRODUCT OWNER" destination="HISTORIA DE USUARIO" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
-      <Relation name="CLASIFICA" source="ESTADO DE TAREA" destination="TAREA" kind="1n_non_id" start="true" definition="true" delete="no_action" update="no_action" />
-      <Relation name="SCRUM MASTER" source="MIEMBRO EQUIPO" destination="MIEMBRO EQUIPO" kind="generalization" start="false" definition="true" delete="no_action" update="no_action" />
+      <Relation name="SCRUM MASTER" source="MIEMBRO EQUIPO" destination="MIEMBRO EQUIPO" kind="1n_non_id" start="true" definition="true" delete="cascade" update="cascade" />
       <Relation name="PERTENECE A" source="HISTORIA DE USUARIO" destination="TAREA" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
       <Relation name="COMPONE" source="MIEMBRO EQUIPO" destination="PLANNING" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
       <Relation name="COMPONE" source="PRODUCT OWNER" destination="PLANNING" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
-      <Relation name="PERTENECE A" source="PLANNING" destination="CONJUNTO DE HU" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
       <Relation name="PERTENECE A" source="PLANNING" destination="SPRINT" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
-      <Relation name="CLASIFICA" source="CONJUNTO DE HU" destination="HISTORIA DE USUARIO" kind="1n_non_id" start="true" definition="true" delete="no_action" update="no_action" />
-      <Relation name="CLASIFICA" source="SPRINT" destination="CONJUNTO DE HU" kind="1n_non_id" start="false" definition="true" delete="no_action" update="no_action" />
+      <Relation name="CLASIFICA" source="TAREA" destination="ESTADO DE TAREA" kind="1n_non_id" start="true" definition="true" delete="no_action" update="no_action" />
+      <Relation name="ASIGNADO A" source="HISTORIA DE USUARIO" destination="ASIGNACION SPRINT-HU" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
+      <Relation name="ASIGNADO" source="SPRINT" destination="ASIGNACION SPRINT-HU" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
+      <Relation name="COMPONE DE" source="PRODUCT OWNER" destination="SCRUM TEAM" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
+      <Relation name="COMPONE DE" source="MIEMBRO EQUIPO" destination="SCRUM TEAM" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
+      <Relation name="COMPONE" source="SCRUM TEAM" destination="ASIGNACION PROY" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
+      <Relation name="COMPONE" source="PROYECTO" destination="ASIGNACION PROY" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
+      <Relation name="COMPONE" source="CUENTAS" destination="IDENTIDAD LOG" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
+      <Relation name="COMPONE" source="TRABAJADOR" destination="IDENTIDAD LOG" kind="1n" start="false" definition="true" delete="no_action" update="no_action" />
+      <Relation name="CLASIFICA" source="TRABAJADOR" destination="MIEMBRO EQUIPO" kind="1n_non_id" start="false" definition="true" delete="no_action" update="no_action" />
+      <Relation name="CLASIFICA" source="TRABAJADOR" destination="PRODUCT OWNER" kind="1n_non_id" start="false" definition="true" delete="no_action" update="no_action" />
     </Relations>
   </Model>
   <Diagram>
     <Shapes>
       <Tables>
-        <Table table="ESTADO DE TAREA" x="310" y="676" />
-        <Table table="TAREA" x="834" y="634" />
-        <Table table="PLANNING" x="764" y="326" />
-        <Table table="CONJUNTO DE HU" x="246" y="141" />
         <Table table="SPRINT" x="1109" y="101" />
-        <Table table="MIEMBRO EQUIPO" x="1109" y="497" />
         <Table table="HISTORIA DE USUARIO" x="177" y="381" />
-        <Table table="PRODUCT OWNER" x="823" y="545" />
+        <Table table="ASIGNACION SPRINT-HU" x="285" y="134" />
+        <Table table="PLANNING" x="596" y="308" />
+        <Table table="TAREA" x="80" y="638" />
+        <Table table="ESTADO DE TAREA" x="194" y="873" />
+        <Table table="PRODUCT OWNER" x="569" y="762" />
+        <Table table="ASIGNACION PROY" x="884" y="604" />
+        <Table table="SCRUM TEAM" x="776" y="435" />
+        <Table table="TRABAJADOR" x="1624" y="705" />
+        <Table table="IDENTIDAD LOG" x="1946" y="719" />
+        <Table table="CUENTAS" x="1802" y="899" />
+        <Table table="MIEMBRO EQUIPO" x="1531" y="292" />
+        <Table table="PROYECTO" x="1346" y="550" />
       </Tables>
       <Relations>
         <Relation source="MIEMBRO EQUIPO" destination="MIEMBRO EQUIPO" division="1.0" />
-        <Relation source="PRODUCT OWNER" destination="PLANNING" division="0.5" />
-        <Relation source="MIEMBRO EQUIPO" destination="PLANNING" division="0.5555555555555556" />
-        <Relation source="ESTADO DE TAREA" destination="TAREA" division="0.22926669576604103" />
-        <Relation source="PLANNING" destination="CONJUNTO DE HU" division="0.5" />
-        <Relation source="CONJUNTO DE HU" destination="HISTORIA DE USUARIO" division="0.5" />
-        <Relation source="SPRINT" destination="CONJUNTO DE HU" division="0.5" />
-        <Relation source="HISTORIA DE USUARIO" destination="TAREA" division="0.38461538461538464" />
-        <Relation source="PLANNING" destination="SPRINT" division="0.5384615384615384" />
+        <Relation source="HISTORIA DE USUARIO" destination="TAREA" division="0.5" />
+        <Relation source="HISTORIA DE USUARIO" destination="ASIGNACION SPRINT-HU" division="0.5" />
         <Relation source="PRODUCT OWNER" destination="HISTORIA DE USUARIO" division="0.45411845572230525" />
+        <Relation source="CUENTAS" destination="IDENTIDAD LOG" division="0.5" />
+        <Relation source="TRABAJADOR" destination="IDENTIDAD LOG" division="0.53125" />
+        <Relation source="TRABAJADOR" destination="MIEMBRO EQUIPO" division="0.5" />
+        <Relation source="MIEMBRO EQUIPO" destination="SCRUM TEAM" division="0.5" />
+        <Relation source="PRODUCT OWNER" destination="PLANNING" division="0.5" />
+        <Relation source="SCRUM TEAM" destination="ASIGNACION PROY" division="0.5357142857142857" />
+        <Relation source="PROYECTO" destination="ASIGNACION PROY" division="0.5081967213114754" />
+        <Relation source="PLANNING" destination="SPRINT" division="0.5384615384615384" />
+        <Relation source="PRODUCT OWNER" destination="SCRUM TEAM" division="0.5" />
+        <Relation source="TAREA" destination="ESTADO DE TAREA" division="0.5" />
+        <Relation source="TRABAJADOR" destination="PRODUCT OWNER" division="0.5" />
+        <Relation source="SPRINT" destination="ASIGNACION SPRINT-HU" division="0.5" />
+        <Relation source="MIEMBRO EQUIPO" destination="PLANNING" division="0.5555555555555556" />
       </Relations>
       <Regions>
-        <Region name="3,2,22-02-2010" color="cyan" x="778" y="288" width="116" height="50" />
-        <Region name="3,4,19-11-2010" color="cyan" x="899" y="288" width="117" height="50" />
+        <Region name="3,2,22-02-2010" color="cyan" x="623" y="302" width="116" height="50" />
+        <Region name="3,4,19-11-2010" color="cyan" x="744" y="295" width="117" height="50" />
       </Regions>
     </Shapes>
   </Diagram>
-  <Viewport zoom="0.75" x="85" y="38" />
+  <Viewport zoom="0.56" x="329" y="30" />
 </easyDesigner>
 
